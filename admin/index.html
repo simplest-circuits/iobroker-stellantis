@@ -8,15 +8,175 @@
   <script src="../../lib/js/materialize.js"></script>
   <script src="../../lib/js/adapter-settings.js"></script>
   <style>
-    .brand-logo { height: 32px; margin-right: 8px; vertical-align: middle; }
-    .step-card { border-left: 4px solid #1565C0; padding: 12px 16px; margin: 16px 0; background: #f5f9ff; border-radius: 4px; }
-    .step-card h6 { font-weight: bold; color: #1565C0; margin: 0 0 8px 0; }
-    .auth-url-box { font-family: monospace; font-size: 11px; word-break: break-all; background: #eee; padding: 10px; border-radius: 4px; max-height: 120px; overflow-y: auto; }
-    .success-msg { color: #2e7d32; font-weight: bold; }
-    .error-msg   { color: #c62828; font-weight: bold; }
-    .info-msg    { color: #1565C0; }
-    #auth-section { margin-top: 24px; }
-    .input-field label { font-weight: 500; }
+    :root {
+      --bg-card: #1f242c;
+      --bg-soft: #2a313b;
+      --bg-url: #151a20;
+      --text-main: #f1f5f9;
+      --text-muted: #b7c0cc;
+      --accent: #2e8fff;
+      --accent-soft: rgba(46, 143, 255, 0.18);
+      --ok: #58d68d;
+      --error: #ff6b6b;
+    }
+
+    .adapter-container {
+      max-width: 1080px;
+      margin: 0 auto;
+      padding: 12px 14px 20px;
+      color: var(--text-main);
+    }
+
+    .page-title {
+      margin: 0;
+      font-size: 1.9rem;
+      font-weight: 700;
+      letter-spacing: 0.2px;
+    }
+
+    .subtitle {
+      margin-top: 6px;
+      color: var(--text-muted);
+      font-size: 0.98rem;
+    }
+
+    .panel {
+      background: var(--bg-card);
+      border: 1px solid #313a46;
+      border-radius: 10px;
+      padding: 14px 16px 8px;
+      margin-top: 14px;
+      box-shadow: 0 6px 20px rgba(0, 0, 0, 0.22);
+    }
+
+    .panel-title {
+      margin: 0 0 2px;
+      font-size: 1.15rem;
+      font-weight: 700;
+      color: var(--text-main);
+    }
+
+    .panel-subtitle {
+      margin: 0 0 12px;
+      color: var(--text-muted);
+      font-size: 0.93rem;
+      line-height: 1.45;
+    }
+
+    .step-card {
+      border-left: 4px solid var(--accent);
+      padding: 14px 16px;
+      margin: 14px 0;
+      background: var(--bg-soft);
+      border-radius: 8px;
+    }
+
+    .step-card h6 {
+      font-weight: 700;
+      color: #9bcbff;
+      margin: 0 0 10px;
+    }
+
+    .step-card p {
+      color: var(--text-muted);
+      margin: 0;
+    }
+
+    .auth-url-box {
+      font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+      font-size: 12px;
+      line-height: 1.4;
+      word-break: break-all;
+      background: var(--bg-url);
+      color: #cce2ff;
+      border: 1px solid #3a4758;
+      padding: 10px;
+      border-radius: 6px;
+      max-height: 140px;
+      overflow-y: auto;
+    }
+
+    .success-msg { color: var(--ok); font-weight: 700; }
+    .error-msg   { color: var(--error); font-weight: 700; }
+    .info-msg    { color: #9bcbff; }
+    #auth-section { margin-top: 10px; }
+
+    .input-field label {
+      color: #bcc8d8 !important;
+      font-weight: 600;
+      font-size: 0.9rem;
+    }
+
+    .input-field input[type=text],
+    .input-field input[type=number],
+    .select-wrapper input.select-dropdown {
+      color: var(--text-main) !important;
+      border-bottom: 1px solid #4b5665 !important;
+      background: rgba(255, 255, 255, 0.02);
+      padding-left: 4px !important;
+    }
+
+    .input-field input[type=text]:focus,
+    .input-field input[type=number]:focus,
+    .select-wrapper input.select-dropdown:focus {
+      border-bottom: 1px solid var(--accent) !important;
+      box-shadow: 0 1px 0 0 var(--accent) !important;
+    }
+
+    .dropdown-content {
+      background: #1e252e;
+      border: 1px solid #3b4656;
+    }
+
+    .dropdown-content li > a,
+    .dropdown-content li > span {
+      color: #e7eef9;
+    }
+
+    .btn {
+      border-radius: 6px;
+      letter-spacing: 0.2px;
+      box-shadow: 0 6px 16px rgba(0, 0, 0, 0.22);
+    }
+
+    .btn-flat {
+      color: #9bcbff !important;
+    }
+
+    .inline-buttons {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      margin-top: 12px;
+    }
+
+    #connection-status {
+      padding: 11px 12px !important;
+      border-radius: 8px !important;
+      border: 1px solid #394656;
+      background: #1f252d !important;
+      color: var(--text-main);
+      font-size: 13px;
+    }
+
+    code {
+      background: rgba(46, 143, 255, 0.14);
+      padding: 2px 5px;
+      border-radius: 4px;
+      color: #d3e8ff;
+    }
+
+    @media (max-width: 760px) {
+      .adapter-container {
+        padding: 10px 10px 16px;
+      }
+      .page-title {
+        font-size: 1.45rem;
+      }
+      .panel {
+        padding: 12px 12px 6px;
+      }
+    }
   </style>
 </head>
 <body>
@@ -25,12 +185,16 @@
 
   <div class="row">
     <div class="col s12">
-      <h5>🚗 Stellantis Fahrzeuge – Adapter Einstellungen</h5>
-      <p class="grey-text text-darken-1">
+      <h5 class="page-title">Stellantis Fahrzeuge - Adapter Einstellungen</h5>
+      <p class="subtitle">
         Unterstützt: MyPeugeot · MyCitroën · MyDS · MyOpel · MyVauxhall
       </p>
     </div>
   </div>
+
+  <div class="panel">
+    <h6 class="panel-title">Basis-Konfiguration</h6>
+    <p class="panel-subtitle">Marke, Land und Intervall festlegen. Danach unten den OAuth2-Login starten.</p>
 
   <!-- ── Brand + Country ─────────────────────────────────────────────────── -->
   <div class="row">
@@ -62,11 +226,12 @@
       <label for="precondTemp">Vorkonditionierungs-Temperatur (°C)</label>
     </div>
   </div>
+  </div>
 
   <!-- ── OAuth2 Setup ───────────────────────────────────────────────────── -->
-  <div id="auth-section">
-    <h6>🔐 Stellantis Login (OAuth2)</h6>
-    <p class="grey-text">
+  <div id="auth-section" class="panel">
+    <h6 class="panel-title">Stellantis Login (OAuth2)</h6>
+    <p class="panel-subtitle">
       Seit Anfang 2024 erfordert Stellantis eine Browser-Anmeldung.
       Klicke auf „Auth-URL erzeugen", öffne den Link im Browser, melde dich
       mit deinem Stellantis-Account an und kopiere dann den <strong>Code</strong>
@@ -108,7 +273,7 @@
     </div>
 
     <!-- Utilities -->
-    <div style="margin-top:12px;">
+    <div class="inline-buttons">
       <button class="btn-flat grey-text" id="btn-clear-tokens">🗑️ Tokens löschen (Re-Auth)</button>
       <button class="btn-flat blue-text" id="btn-refresh-now">🔄 Jetzt aktualisieren</button>
     </div>
