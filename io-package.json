@@ -13,7 +13,7 @@
     "authors": ["ioBroker Community"],
     "keywords": ["stellantis", "peugeot", "opel", "citroen", "ds", "vauxhall", "ev"],
     "license": "MIT",
-    "version": "0.1.0",
+    "version": "0.1.1",
     "mode": "daemon",
     "type": "iot-systems",
     "icon": "admin/stellantis.png",
@@ -25,6 +25,10 @@
       "config": "materialize"
     },
     "news": {
+      "0.1.1": {
+        "de": "Admin-UI Stabilisierung: fehlendes index_m ergänzt, Dark-Theme verbessert und Brand-Auswahlfeld sichtbar gemacht.",
+        "en": "Admin UI stabilization: added missing index_m, improved dark-theme styling, and fixed visible brand selection."
+      },
       "0.1.0": {
         "de": "Erster Release – OAuth2 Authorization Code Flow mit neuem Stellantis Backend",
         "en": "Initial release – OAuth2 Authorization Code Flow with new Stellantis backend"
