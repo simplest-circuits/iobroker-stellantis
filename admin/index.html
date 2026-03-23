@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8" />
+  <title>Stellantis Adapter – Einstellungen</title>
+  <link rel="stylesheet" href="../../css/adapter.css" />
+  <link rel="stylesheet" href="../../lib/css/materialize.css" />
+  <script src="../../lib/js/materialize.js"></script>
+  <script src="../../lib/js/adapter-settings.js"></script>
+  <style>
+    .brand-logo { height: 32px; margin-right: 8px; vertical-align: middle; }
+    .step-card { border-left: 4px solid #1565C0; padding: 12px 16px; margin: 16px 0; background: #f5f9ff; border-radius: 4px; }
+    .step-card h6 { font-weight: bold; color: #1565C0; margin: 0 0 8px 0; }
+    .auth-url-box { font-family: monospace; font-size: 11px; word-break: break-all; background: #eee; padding: 10px; border-radius: 4px; max-height: 120px; overflow-y: auto; }
+    .success-msg { color: #2e7d32; font-weight: bold; }
+    .error-msg   { color: #c62828; font-weight: bold; }
+    .info-msg    { color: #1565C0; }
+    #auth-section { margin-top: 24px; }
+    .input-field label { font-weight: 500; }
+  </style>
+</head>
+<body>
+
+<div class="m adapter-container">
+
+  <div class="row">
+    <div class="col s12">
+      <h5>🚗 Stellantis Fahrzeuge – Adapter Einstellungen</h5>
+      <p class="grey-text text-darken-1">
+        Unterstützt: MyPeugeot · MyCitroën · MyDS · MyOpel · MyVauxhall
+      </p>
+    </div>
+  </div>
+
+  <!-- ── Brand + Country ─────────────────────────────────────────────────── -->
+  <div class="row">
+    <div class="input-field col s12 m6">
+      <select id="brand" class="iob">
+        <option value="">– Brand wählen –</option>
+        <option value="MyPeugeot">MyPeugeot</option>
+        <option value="MyCitroen">MyCitroën</option>
+        <option value="MyDS">MyDS</option>
+        <option value="MyOpel">MyOpel</option>
+        <option value="MyVauxhall">MyVauxhall</option>
+      </select>
+      <label>Brand / Marke</label>
+    </div>
+    <div class="input-field col s12 m6">
+      <input type="text" id="countryCode" class="value iob" placeholder="de" maxlength="3" />
+      <label for="countryCode">Ländercode (z.B. de, fr, gb)</label>
+    </div>
+  </div>
+
+  <!-- ── Poll interval ──────────────────────────────────────────────────── -->
+  <div class="row">
+    <div class="input-field col s12 m6">
+      <input type="number" id="pollInterval" class="value iob" min="2" max="120" />
+      <label for="pollInterval">Abfrageintervall (Minuten, min. 2)</label>
+    </div>
+    <div class="input-field col s12 m6">
+      <input type="number" id="precondTemp" class="value iob" min="16" max="28" />
+      <label for="precondTemp">Vorkonditionierungs-Temperatur (°C)</label>
+    </div>
+  </div>
+
+  <!-- ── OAuth2 Setup ───────────────────────────────────────────────────── -->
+  <div id="auth-section">
+    <h6>🔐 Stellantis Login (OAuth2)</h6>
+    <p class="grey-text">
+      Seit Anfang 2024 erfordert Stellantis eine Browser-Anmeldung.
+      Klicke auf „Auth-URL erzeugen", öffne den Link im Browser, melde dich
+      mit deinem Stellantis-Account an und kopiere dann den <strong>Code</strong>
+      aus der Weiterleitungs-URL in das Feld unten.
+    </p>
+
+    <!-- Step 1 -->
+    <div class="step-card">
+      <h6>Schritt 1 – Auth-URL erzeugen</h6>
+      <p class="grey-text text-darken-1" style="font-size:13px">
+        Speichere zuerst Brand und Ländercode oben, dann klicke den Button.
+      </p>
+      <button class="btn waves-effect waves-light blue darken-2" id="btn-get-url">
+        Auth-URL erzeugen
+      </button>
+      <div id="auth-url-display" style="margin-top:12px; display:none;">
+        <div class="auth-url-box" id="auth-url-text"></div>
+        <button class="btn-flat blue-text" id="btn-copy-url" style="margin-top:6px;">📋 URL kopieren</button>
+        <a class="btn-flat green-text" id="btn-open-url" href="#" target="_blank" style="margin-top:6px;">🌐 Im Browser öffnen</a>
+        <p class="info-msg" style="font-size:12px; margin-top:8px;">
+          Nach dem Login wird der Browser auf eine URL wie
+          <code>mymap://oauth2redirect/de?code=<strong>DEIN_CODE</strong>&amp;state=...</code>
+          oder eine Fehlerseite weitergeleitet. Kopiere den Wert des <code>code=</code>-Parameters.
+        </p>
+      </div>
+    </div>
+
+    <!-- Step 2 -->
+    <div class="step-card">
+      <h6>Schritt 2 – Authorization Code eingeben</h6>
+      <div class="input-field">
+        <input type="text" id="auth-code" placeholder="Paste your code here…" style="font-family:monospace;" />
+        <label for="auth-code">Authorization Code</label>
+      </div>
+      <button class="btn waves-effect waves-light green darken-2" id="btn-submit-code">
+        Verbinden / Token austauschen
+      </button>
+      <p id="auth-result" style="margin-top:10px; font-size:13px;"></p>
+    </div>
+
+    <!-- Utilities -->
+    <div style="margin-top:12px;">
+      <button class="btn-flat grey-text" id="btn-clear-tokens">🗑️ Tokens löschen (Re-Auth)</button>
+      <button class="btn-flat blue-text" id="btn-refresh-now">🔄 Jetzt aktualisieren</button>
+    </div>
+  </div>
+
+  <!-- ── Connection status ──────────────────────────────────────────────── -->
+  <div class="row" style="margin-top: 24px;">
+    <div class="col s12">
+      <div id="connection-status" style="padding: 10px; border-radius: 4px; background: #eee; font-size: 13px;">
+        Verbindungsstatus wird geladen…
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<script>
+/* ──────────────────────────────────────────────────────────────────────────
+   ioBroker adapter settings boilerplate
+   ────────────────────────────────────────────────────────────────────────── */
+function getTargetInstance() {
+  // "instance" is provided by ioBroker admin; fallback keeps first-instance behavior.
+  if (typeof instance !== "undefined" && instance !== null && instance !== "") {
+    return "stellantis." + instance;
+  }
+  return "stellantis.0";
+}
+
+function load(settings, onChange) {
+  if (!settings) return;
+  $(".value").each(function () {
+    const id = $(this).attr("id");
+    if (id && settings[id] !== undefined) {
+      if ($(this).is("input[type=checkbox]")) {
+        $(this).prop("checked", settings[id]);
+      } else {
+        $(this).val(settings[id]);
+      }
+    }
+  });
+  // Select
+  if (settings.brand) $("#brand").val(settings.brand);
+
+  // Apply defaults
+  if (!$("#pollInterval").val()) $("#pollInterval").val(10);
+  if (!$("#precondTemp").val()) $("#precondTemp").val(21);
+  if (!$("#countryCode").val()) $("#countryCode").val("de");
+
+  $("select").formSelect();
+  onChange(false);
+
+  // Check connection state
+  socket.emit("getState", getTargetInstance() + ".info.connection", function (err, state) {
+    if (state) {
+      const connected = state.val === true;
+      const el = document.getElementById("connection-status");
+      el.style.background = connected ? "#e8f5e9" : "#ffebee";
+      el.textContent = connected ? "✅ Verbunden mit Stellantis API" : "❌ Nicht verbunden – bitte OAuth2 einrichten";
+    }
+  });
+
+  $(".value, select").change(function () { onChange(true); });
+}
+
+function save(callback) {
+  const config = {};
+  $(".value").each(function () {
+    const id = $(this).attr("id");
+    if (!id) return;
+    if ($(this).is("input[type=checkbox]")) {
+      config[id] = $(this).prop("checked");
+    } else if ($(this).attr("type") === "number") {
+      config[id] = parseFloat($(this).val()) || 0;
+    } else {
+      config[id] = $(this).val();
+    }
+  });
+  config.brand = $("#brand").val();
+  callback(config);
+}
+
+/* ──────────────────────────────────────────────────────────────────────────
+   OAuth2 helpers
+   ────────────────────────────────────────────────────────────────────────── */
+document.getElementById("btn-get-url").addEventListener("click", function () {
+  const brand = document.getElementById("brand").value;
+  const countryCode = document.getElementById("countryCode").value || "de";
+
+  if (!brand) {
+    alert("Bitte zuerst eine Marke auswählen und speichern.");
+    return;
+  }
+
+  sendTo(getTargetInstance(), "getAuthUrl", { brand, countryCode }, function (res) {
+    if (res.error) {
+      alert("Fehler: " + res.error);
+      return;
+    }
+    const box = document.getElementById("auth-url-display");
+    const txt = document.getElementById("auth-url-text");
+    const openBtn = document.getElementById("btn-open-url");
+    txt.textContent = res.url;
+    openBtn.href = res.url;
+    box.style.display = "block";
+  });
+});
+
+document.getElementById("btn-copy-url").addEventListener("click", function () {
+  const url = document.getElementById("auth-url-text").textContent;
+  navigator.clipboard.writeText(url).then(() => {
+    document.getElementById("btn-copy-url").textContent = "✅ Kopiert!";
+    setTimeout(() => { document.getElementById("btn-copy-url").textContent = "📋 URL kopieren"; }, 2000);
+  });
+});
+
+document.getElementById("btn-submit-code").addEventListener("click", function () {
+  const code = document.getElementById("auth-code").value.trim();
+  const resultEl = document.getElementById("auth-result");
+
+  if (!code) {
+    resultEl.className = "error-msg";
+    resultEl.textContent = "Bitte einen Authorization Code eingeben.";
+    return;
+  }
+
+  resultEl.className = "info-msg";
+  resultEl.textContent = "Wird verarbeitet…";
+
+  sendTo(getTargetInstance(), "submitAuthCode", { code }, function (res) {
+    if (res.error) {
+      resultEl.className = "error-msg";
+      resultEl.textContent = "❌ Fehler: " + res.error;
+    } else {
+      resultEl.className = "success-msg";
+      resultEl.textContent = "✅ Erfolgreich verbunden! Fahrzeugdaten werden geladen…";
+      document.getElementById("connection-status").style.background = "#e8f5e9";
+      document.getElementById("connection-status").textContent = "✅ Verbunden mit Stellantis API";
+    }
+  });
+});
+
+document.getElementById("btn-clear-tokens").addEventListener("click", function () {
+  if (!confirm("Gespeicherte Tokens löschen und neu anmelden?")) return;
+  sendTo(getTargetInstance(), "clearTokens", {}, function (res) {
+    alert(res.error ? "Fehler: " + res.error : "Tokens gelöscht. Bitte OAuth2 erneut durchführen.");
+    document.getElementById("connection-status").style.background = "#ffebee";
+    document.getElementById("connection-status").textContent = "❌ Nicht verbunden – bitte OAuth2 einrichten";
+  });
+});
+
+document.getElementById("btn-refresh-now").addEventListener("click", function () {
+  sendTo(getTargetInstance(), "refreshNow", {}, function (res) {
+    alert(res.error ? "Fehler: " + res.error : "Fahrzeugdaten wurden aktualisiert.");
+  });
+});
+</script>
+</body>
+</html>

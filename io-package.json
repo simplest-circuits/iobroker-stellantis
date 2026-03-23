@@ -1,0 +1,64 @@
+{
+  "common": {
+    "name": "stellantis",
+    "title": "Stellantis Vehicles",
+    "titleLang": {
+      "de": "Stellantis Fahrzeuge",
+      "en": "Stellantis Vehicles"
+    },
+    "desc": {
+      "de": "ioBroker Adapter für Stellantis Fahrzeuge (Peugeot, Citroën, Opel, DS, Vauxhall)",
+      "en": "ioBroker Adapter for Stellantis vehicles (Peugeot, Citroën, Opel, DS, Vauxhall)"
+    },
+    "authors": ["ioBroker Community"],
+    "keywords": ["stellantis", "peugeot", "opel", "citroen", "ds", "vauxhall", "ev"],
+    "license": "MIT",
+    "version": "0.1.0",
+    "mode": "daemon",
+    "type": "iot-systems",
+    "icon": "admin/stellantis.png",
+    "loglevel": "info",
+    "main": "main.js",
+    "enabled": true,
+    "restartSchedule": "0 4 * * *",
+    "adminUI": {
+      "config": "materialize"
+    },
+    "news": {
+      "0.1.0": {
+        "de": "Erster Release – OAuth2 Authorization Code Flow mit neuem Stellantis Backend",
+        "en": "Initial release – OAuth2 Authorization Code Flow with new Stellantis backend"
+      }
+    }
+  },
+  "native": {
+    "brand": "",
+    "countryCode": "de",
+    "pollInterval": 10,
+    "precondTemp": 21
+  },
+  "objects": [],
+  "instanceObjects": [
+    {
+      "_id": "info",
+      "type": "channel",
+      "common": {
+        "name": "Information"
+      },
+      "native": {}
+    },
+    {
+      "_id": "info.connection",
+      "type": "state",
+      "common": {
+        "role": "indicator.connected",
+        "name": "Connected to Stellantis API",
+        "type": "boolean",
+        "read": true,
+        "write": false,
+        "def": false
+      },
+      "native": {}
+    }
+  ]
+}

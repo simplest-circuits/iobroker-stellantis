@@ -1,0 +1,41 @@
+{
+  "name": "iobroker.stellantis",
+  "version": "0.1.0",
+  "description": "ioBroker Adapter for Stellantis vehicles (Peugeot, Citroën, Opel, DS, Vauxhall)",
+  "author": {
+    "name": "ioBroker Community",
+    "email": "info@iobroker.net"
+  },
+  "homepage": "https://github.com/iobroker-community-adapters/ioBroker.stellantis",
+  "license": "MIT",
+  "keywords": [
+    "ioBroker",
+    "stellantis",
+    "peugeot",
+    "opel",
+    "citroen",
+    "ds",
+    "vauxhall",
+    "ev",
+    "car"
+  ],
+  "main": "main.js",
+  "files": [
+    "admin/",
+    "lib/",
+    "main.js",
+    "io-package.json",
+    "README.md"
+  ],
+  "scripts": {
+    "start": "node main.js",
+    "test": "echo \"No tests defined\""
+  },
+  "dependencies": {
+    "@iobroker/adapter-core": "^3.1.4",
+    "axios": "^1.6.0"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  }
+}
