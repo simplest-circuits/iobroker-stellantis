@@ -1,6 +1,6 @@
 # ioBroker.stellantis
 
-[![Version](https://img.shields.io/badge/version-0.1.2-blue.svg)](https://github.com/iobroker-community-adapters/ioBroker.stellantis)
+[![Version](https://img.shields.io/badge/version-0.1.3-blue.svg)](https://github.com/iobroker-community-adapters/ioBroker.stellantis)
 [![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
 
 > **ioBroker Adapter für Stellantis-Fahrzeuge** (MyPeugeot · MyCitroën · MyDS · MyOpel · MyVauxhall)
@@ -50,11 +50,11 @@ So funktioniert es zuverlässig:
 ```bash
 npm pack
 ```
-2. Datei `iobroker.stellantis-0.1.2.tgz` auf den ioBroker-Host kopieren (z.B. nach `/opt/iobroker`).
+2. Datei `iobroker.stellantis-0.1.3.tgz` auf den ioBroker-Host kopieren (z.B. nach `/opt/iobroker`).
 3. Auf dem ioBroker-Host installieren:
 ```bash
 cd /opt/iobroker
-npm install ./iobroker.stellantis-0.1.2.tgz
+npm install ./iobroker.stellantis-0.1.3.tgz
 iobroker add stellantis
 ```
 

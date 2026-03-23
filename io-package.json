@@ -13,7 +13,7 @@
     "authors": ["ioBroker Community"],
     "keywords": ["stellantis", "peugeot", "opel", "citroen", "ds", "vauxhall", "ev"],
     "license": "MIT",
-    "version": "0.1.2",
+    "version": "0.1.3",
     "mode": "daemon",
     "type": "iot-systems",
     "icon": "admin/stellantis.png",
@@ -25,6 +25,10 @@
       "config": "materialize"
     },
     "news": {
+      "0.1.3": {
+        "de": "Admin-Messagehandling verbessert: sendTo-Fallback und Timeout-Fehlermeldung, damit Auth-URL-Erzeugung zuverlässig reagiert.",
+        "en": "Improved admin message handling: sendTo fallback and timeout error feedback so auth URL generation responds reliably."
+      },
       "0.1.2": {
         "de": "Admin-Config ohne Materialize-Abhängigkeit stabilisiert, damit Brand/Marke als natives Dropdown immer sichtbar ist.",
         "en": "Stabilized admin config without Materialize dependency so Brand selection is always visible as native dropdown."

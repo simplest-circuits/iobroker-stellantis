@@ -1,6 +1,6 @@
 {
   "name": "iobroker.stellantis",
-  "version": "0.1.2",
+  "version": "0.1.3",
   "description": "ioBroker Adapter for Stellantis vehicles (Peugeot, Citroën, Opel, DS, Vauxhall)",
   "author": {
     "name": "ioBroker Community",
