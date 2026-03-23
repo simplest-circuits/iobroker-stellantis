@@ -4,8 +4,6 @@
   <meta charset="UTF-8" />
   <title>Stellantis Adapter – Einstellungen</title>
   <link rel="stylesheet" href="../../css/adapter.css" />
-  <link rel="stylesheet" href="../../lib/css/materialize.css" />
-  <script src="../../lib/js/materialize.js"></script>
   <script src="../../lib/js/adapter-settings.js"></script>
   <style>
     :root {
@@ -129,6 +127,9 @@
       display: block !important;
       opacity: 1 !important;
       visibility: visible !important;
+      position: relative !important;
+      z-index: 2;
+      min-height: 42px;
       -webkit-appearance: auto;
       appearance: auto;
     }
@@ -211,7 +212,7 @@
     <div class="col s12 m6">
       <div class="field">
       <label class="field-label" for="brand">Brand / Marke</label>
-      <select id="brand" class="value iob field-control">
+      <select id="brand" class="value iob field-control" aria-label="Brand / Marke">
         <option value="">Bitte Brand wählen</option>
         <option value="MyPeugeot">MyPeugeot</option>
         <option value="MyCitroen">MyCitroën</option>
