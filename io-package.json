@@ -13,7 +13,7 @@
     "authors": ["ioBroker Community"],
     "keywords": ["stellantis", "peugeot", "opel", "citroen", "ds", "vauxhall", "ev"],
     "license": "MIT",
-    "version": "0.1.4",
+    "version": "0.1.5",
     "mode": "daemon",
     "type": "iot-systems",
     "icon": "admin/stellantis.png",
@@ -25,6 +25,10 @@
       "config": "materialize"
     },
     "news": {
+      "0.1.5": {
+        "de": "Admin-Socket-Fallback ergänzt (inkl. socket.io-Verbindung), damit Auth-Aktionen auch in neuen Admin-Kontexten ohne globale sendTo/socket funktionieren.",
+        "en": "Added admin socket fallback (including socket.io connection) so auth actions work in newer admin contexts without global sendTo/socket."
+      },
       "0.1.4": {
         "de": "Admin-Kompatibilität verbessert: sendTo-Fallback auf socket.emit hinzugefügt, damit Auth-Buttons auch ohne globale sendTo-Funktion funktionieren.",
         "en": "Improved admin compatibility: added sendTo fallback to socket.emit so auth buttons work even without global sendTo function."

@@ -4,6 +4,7 @@
   <meta charset="UTF-8" />
   <title>Stellantis Adapter – Einstellungen</title>
   <link rel="stylesheet" href="../../css/adapter.css" />
+  <script src="../../lib/js/socket.io.js"></script>
   <script src="../../lib/js/adapter-settings.js"></script>
   <style>
     :root {
@@ -321,6 +322,28 @@ function getTargetInstance() {
   return "stellantis.0";
 }
 
+let _fallbackSocket = null;
+function getSocketTransport() {
+  if (typeof socket !== "undefined" && socket && typeof socket.emit === "function") {
+    return socket;
+  }
+  if (typeof window !== "undefined") {
+    if (window.socket && typeof window.socket.emit === "function") {
+      return window.socket;
+    }
+    if (window.parent && window.parent.socket && typeof window.parent.socket.emit === "function") {
+      return window.parent.socket;
+    }
+    if (!_fallbackSocket && window.io && typeof window.io.connect === "function") {
+      _fallbackSocket = window.io.connect("/", { path: "/socket.io" });
+    }
+    if (_fallbackSocket && typeof _fallbackSocket.emit === "function") {
+      return _fallbackSocket;
+    }
+  }
+  return null;
+}
+
 function sendToAdapter(command, message, callback) {
   const primary = getTargetInstance();
   const fallback = "stellantis.0";
@@ -330,8 +353,9 @@ function sendToAdapter(command, message, callback) {
       sendTo(target, command, message, cb);
       return;
     }
-    if (typeof socket !== "undefined" && socket && typeof socket.emit === "function") {
-      socket.emit("sendTo", target, command, message, cb);
+    const sock = getSocketTransport();
+    if (sock) {
+      sock.emit("sendTo", target, command, message, cb);
       return;
     }
     cb({ error: "Admin communication channel unavailable (sendTo/socket missing)." });
@@ -383,14 +407,21 @@ function load(settings, onChange) {
   onChange(false);
 
   // Check connection state
-  socket.emit("getState", getTargetInstance() + ".info.connection", function (err, state) {
-    if (state) {
-      const connected = state.val === true;
-      const el = document.getElementById("connection-status");
-      el.style.background = connected ? "#e8f5e9" : "#ffebee";
-      el.textContent = connected ? "✅ Verbunden mit Stellantis API" : "❌ Nicht verbunden – bitte OAuth2 einrichten";
-    }
-  });
+  const sock = getSocketTransport();
+  if (sock) {
+    sock.emit("getState", getTargetInstance() + ".info.connection", function (err, state) {
+      if (state) {
+        const connected = state.val === true;
+        const el = document.getElementById("connection-status");
+        el.style.background = connected ? "#e8f5e9" : "#ffebee";
+        el.textContent = connected ? "✅ Verbunden mit Stellantis API" : "❌ Nicht verbunden – bitte OAuth2 einrichten";
+      }
+    });
+  } else {
+    const el = document.getElementById("connection-status");
+    el.style.background = "#fff4e5";
+    el.textContent = "⚠️ Admin-Socket nicht verfügbar. Bitte Seite neu laden.";
+  }
 
   $(".value").on("change input", function () { onChange(true); });
 }
