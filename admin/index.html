@@ -101,57 +101,38 @@
     .info-msg    { color: #9bcbff; }
     #auth-section { margin-top: 10px; }
 
-    .input-field label {
-      color: #bcc8d8 !important;
+    .field {
+      margin-bottom: 14px;
+    }
+
+    .field-label {
+      color: #bcc8d8;
       font-weight: 600;
       font-size: 0.9rem;
+      margin-bottom: 6px;
+      display: block;
     }
 
-    .input-field input[type=text],
-    .input-field input[type=number],
-    .select-wrapper input.select-dropdown {
+    .field-control {
+      width: 100%;
+      height: 42px;
+      box-sizing: border-box;
       color: var(--text-main) !important;
-      border-bottom: 1px solid #4b5665 !important;
-      background: rgba(255, 255, 255, 0.02);
-      padding-left: 4px !important;
-    }
-
-    .input-field input[type=text]:focus,
-    .input-field input[type=number]:focus,
-    .select-wrapper input.select-dropdown:focus {
-      border-bottom: 1px solid var(--accent) !important;
-      box-shadow: 0 1px 0 0 var(--accent) !important;
-    }
-
-    .dropdown-content {
-      background: #1e252e;
-      border: 1px solid #3b4656;
-    }
-
-    .dropdown-content li > a,
-    .dropdown-content li > span {
-      color: #e7eef9;
-    }
-
-    .select-wrapper {
-      background: rgba(255, 255, 255, 0.02);
+      border: 1px solid #4b5665 !important;
       border-radius: 6px;
-      min-height: 3rem;
-      border: 1px solid #3d4858;
-      padding: 0 10px;
+      background: rgba(255, 255, 255, 0.02);
+      padding: 0 10px !important;
+      outline: none;
     }
 
-    .select-wrapper input.select-dropdown {
-      margin: 0 !important;
-      height: 3rem !important;
-      line-height: 3rem !important;
-      border: 0 !important;
-      box-shadow: none !important;
-      padding-left: 0 !important;
+    .field-control:focus {
+      border: 1px solid var(--accent) !important;
+      box-shadow: 0 0 0 1px var(--accent-soft) !important;
     }
 
-    .select-wrapper .caret {
-      fill: #a7cfff !important;
+    .field-control option {
+      color: #e7eef9;
+      background: #1e252e;
     }
 
     .btn {
@@ -219,32 +200,40 @@
 
   <!-- ── Brand + Country ─────────────────────────────────────────────────── -->
   <div class="row">
-    <div class="input-field col s12 m6">
-      <select id="brand" class="iob">
-        <option value="" disabled selected>Bitte Brand wählen</option>
+    <div class="col s12 m6">
+      <div class="field">
+      <label class="field-label" for="brand">Brand / Marke</label>
+      <select id="brand" class="value iob field-control">
+        <option value="">Bitte Brand wählen</option>
         <option value="MyPeugeot">MyPeugeot</option>
         <option value="MyCitroen">MyCitroën</option>
         <option value="MyDS">MyDS</option>
         <option value="MyOpel">MyOpel</option>
         <option value="MyVauxhall">MyVauxhall</option>
       </select>
-      <label>Brand / Marke</label>
+      </div>
     </div>
-    <div class="input-field col s12 m6">
-      <input type="text" id="countryCode" class="value iob" placeholder="de" maxlength="3" />
-      <label for="countryCode">Ländercode (z.B. de, fr, gb)</label>
+    <div class="col s12 m6">
+      <div class="field">
+      <label class="field-label" for="countryCode">Ländercode (z.B. de, fr, gb)</label>
+      <input type="text" id="countryCode" class="value iob field-control" placeholder="de" maxlength="3" />
+      </div>
     </div>
   </div>
 
   <!-- ── Poll interval ──────────────────────────────────────────────────── -->
   <div class="row">
-    <div class="input-field col s12 m6">
-      <input type="number" id="pollInterval" class="value iob" min="2" max="120" />
-      <label for="pollInterval">Abfrageintervall (Minuten, min. 2)</label>
+    <div class="col s12 m6">
+      <div class="field">
+      <label class="field-label" for="pollInterval">Abfrageintervall (Minuten, min. 2)</label>
+      <input type="number" id="pollInterval" class="value iob field-control" min="2" max="120" />
+      </div>
     </div>
-    <div class="input-field col s12 m6">
-      <input type="number" id="precondTemp" class="value iob" min="16" max="28" />
-      <label for="precondTemp">Vorkonditionierungs-Temperatur (°C)</label>
+    <div class="col s12 m6">
+      <div class="field">
+      <label class="field-label" for="precondTemp">Vorkonditionierungs-Temperatur (°C)</label>
+      <input type="number" id="precondTemp" class="value iob field-control" min="16" max="28" />
+      </div>
     </div>
   </div>
   </div>
@@ -283,9 +272,9 @@
     <!-- Step 2 -->
     <div class="step-card">
       <h6>Schritt 2 – Authorization Code eingeben</h6>
-      <div class="input-field">
-        <input type="text" id="auth-code" placeholder="Paste your code here…" style="font-family:monospace;" />
-        <label for="auth-code">Authorization Code</label>
+      <div class="field">
+        <label class="field-label" for="auth-code">Authorization Code</label>
+        <input type="text" id="auth-code" class="field-control" placeholder="Paste your code here..." style="font-family:monospace;" />
       </div>
       <button class="btn waves-effect waves-light green darken-2" id="btn-submit-code">
         Verbinden / Token austauschen
@@ -335,7 +324,6 @@ function load(settings, onChange) {
       }
     }
   });
-  // Select
   if (settings.brand) $("#brand").val(settings.brand);
   else $("#brand").val("");
 
@@ -344,7 +332,6 @@ function load(settings, onChange) {
   if (!$("#precondTemp").val()) $("#precondTemp").val(21);
   if (!$("#countryCode").val()) $("#countryCode").val("de");
 
-  $("select").formSelect();
   onChange(false);
 
   // Check connection state
@@ -357,7 +344,7 @@ function load(settings, onChange) {
     }
   });
 
-  $(".value, select").change(function () { onChange(true); });
+  $(".value").on("change input", function () { onChange(true); });
 }
 
 function save(callback) {
