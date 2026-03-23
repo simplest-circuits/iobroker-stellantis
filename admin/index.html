@@ -344,9 +344,13 @@ function getSocketTransport() {
   return null;
 }
 
-function sendToAdapter(command, message, callback) {
+function getTargetCandidates() {
   const primary = getTargetInstance();
-  const fallback = "stellantis.0";
+  const targets = [primary, "stellantis.0", "stellantis"];
+  return [...new Set(targets.filter(Boolean))];
+}
+
+function sendToAdapter(command, message, callback) {
   let finished = false;
   const transport = (target, cb) => {
     if (typeof sendTo === "function") {
@@ -367,21 +371,48 @@ function sendToAdapter(command, message, callback) {
     callback(res || {});
   };
 
-  const timer = setTimeout(() => {
-    if (primary !== fallback) {
-      transport(fallback, (res) => {
-        clearTimeout(timer);
-        done(res);
-      });
-    } else {
-      done({ error: "Keine Antwort vom Adapter. Bitte Instanz starten und erneut versuchen." });
-    }
-  }, 4000);
+  const targets = getTargetCandidates();
+  const sock = getSocketTransport();
 
-  transport(primary, (res) => {
-    clearTimeout(timer);
-    done(res);
-  });
+  const checkAliveAndFinish = () => {
+    if (!sock) {
+      done({ error: "Keine Antwort vom Adapter. Bitte Instanz starten und erneut versuchen." });
+      return;
+    }
+    sock.emit("getState", "system.adapter.stellantis.0.alive", function (_err, state) {
+      const alive = state && state.val === true;
+      done({
+        error: alive
+          ? "Adapter läuft, aber Admin-Nachricht kam nicht an. Bitte Instanz kurz neu starten und Seite neu laden."
+          : "Keine Antwort vom Adapter. Bitte Instanz starten und erneut versuchen.",
+      });
+    });
+  };
+
+  const tryTarget = (idx) => {
+    if (idx >= targets.length) {
+      checkAliveAndFinish();
+      return;
+    }
+    const target = targets[idx];
+    let responded = false;
+    const timer = setTimeout(() => {
+      if (!responded) tryTarget(idx + 1);
+    }, 1800);
+
+    transport(target, (res) => {
+      if (responded) return;
+      responded = true;
+      clearTimeout(timer);
+      if (res && !res.error) {
+        done(res);
+      } else {
+        tryTarget(idx + 1);
+      }
+    });
+  };
+
+  tryTarget(0);
 }
 
 function load(settings, onChange) {

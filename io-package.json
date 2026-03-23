@@ -13,7 +13,7 @@
     "authors": ["ioBroker Community"],
     "keywords": ["stellantis", "peugeot", "opel", "citroen", "ds", "vauxhall", "ev"],
     "license": "MIT",
-    "version": "0.1.6",
+    "version": "0.1.7",
     "mode": "daemon",
     "type": "iot-systems",
     "icon": "admin/stellantis.png",
@@ -26,6 +26,10 @@
       "config": "materialize"
     },
     "news": {
+      "0.1.7": {
+        "de": "Admin-Kommunikation robuster gemacht: sendTo versucht mehrere Zielinstanzen und liefert bei Fehlern einen Alive-Status-Hinweis.",
+        "en": "Made admin communication more robust: sendTo now tries multiple target instances and returns alive-status-aware errors."
+      },
       "0.1.6": {
         "de": "Admin-Metadaten ergänzt: extIcon gesetzt, um die Admin-Warnung \"No extIcon\" zu vermeiden.",
         "en": "Enhanced admin metadata: set extIcon to avoid the admin warning \"No extIcon\"."
