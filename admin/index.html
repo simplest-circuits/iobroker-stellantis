@@ -133,6 +133,27 @@
       color: #e7eef9;
     }
 
+    .select-wrapper {
+      background: rgba(255, 255, 255, 0.02);
+      border-radius: 6px;
+      min-height: 3rem;
+      border: 1px solid #3d4858;
+      padding: 0 10px;
+    }
+
+    .select-wrapper input.select-dropdown {
+      margin: 0 !important;
+      height: 3rem !important;
+      line-height: 3rem !important;
+      border: 0 !important;
+      box-shadow: none !important;
+      padding-left: 0 !important;
+    }
+
+    .select-wrapper .caret {
+      fill: #a7cfff !important;
+    }
+
     .btn {
       border-radius: 6px;
       letter-spacing: 0.2px;
@@ -200,7 +221,7 @@
   <div class="row">
     <div class="input-field col s12 m6">
       <select id="brand" class="iob">
-        <option value="">– Brand wählen –</option>
+        <option value="" disabled selected>Bitte Brand wählen</option>
         <option value="MyPeugeot">MyPeugeot</option>
         <option value="MyCitroen">MyCitroën</option>
         <option value="MyDS">MyDS</option>
@@ -316,6 +337,7 @@ function load(settings, onChange) {
   });
   // Select
   if (settings.brand) $("#brand").val(settings.brand);
+  else $("#brand").val("");
 
   // Apply defaults
   if (!$("#pollInterval").val()) $("#pollInterval").val(10);
