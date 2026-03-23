@@ -13,10 +13,11 @@
     "authors": ["ioBroker Community"],
     "keywords": ["stellantis", "peugeot", "opel", "citroen", "ds", "vauxhall", "ev"],
     "license": "MIT",
-    "version": "0.1.5",
+    "version": "0.1.6",
     "mode": "daemon",
     "type": "iot-systems",
     "icon": "admin/stellantis.png",
+    "extIcon": "https://raw.githubusercontent.com/simplest-circuits/iobroker-stellantis/main/admin/stellantis.png",
     "loglevel": "info",
     "main": "main.js",
     "enabled": true,
@@ -25,6 +26,10 @@
       "config": "materialize"
     },
     "news": {
+      "0.1.6": {
+        "de": "Admin-Metadaten ergänzt: extIcon gesetzt, um die Admin-Warnung \"No extIcon\" zu vermeiden.",
+        "en": "Enhanced admin metadata: set extIcon to avoid the admin warning \"No extIcon\"."
+      },
       "0.1.5": {
         "de": "Admin-Socket-Fallback ergänzt (inkl. socket.io-Verbindung), damit Auth-Aktionen auch in neuen Admin-Kontexten ohne globale sendTo/socket funktionieren.",
         "en": "Added admin socket fallback (including socket.io connection) so auth actions work in newer admin contexts without global sendTo/socket."
