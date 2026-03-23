@@ -325,6 +325,17 @@ function sendToAdapter(command, message, callback) {
   const primary = getTargetInstance();
   const fallback = "stellantis.0";
   let finished = false;
+  const transport = (target, cb) => {
+    if (typeof sendTo === "function") {
+      sendTo(target, command, message, cb);
+      return;
+    }
+    if (typeof socket !== "undefined" && socket && typeof socket.emit === "function") {
+      socket.emit("sendTo", target, command, message, cb);
+      return;
+    }
+    cb({ error: "Admin communication channel unavailable (sendTo/socket missing)." });
+  };
 
   const done = (res) => {
     if (finished) return;
@@ -334,7 +345,7 @@ function sendToAdapter(command, message, callback) {
 
   const timer = setTimeout(() => {
     if (primary !== fallback) {
-      sendTo(fallback, command, message, (res) => {
+      transport(fallback, (res) => {
         clearTimeout(timer);
         done(res);
       });
@@ -343,7 +354,7 @@ function sendToAdapter(command, message, callback) {
     }
   }, 4000);
 
-  sendTo(primary, command, message, (res) => {
+  transport(primary, (res) => {
     clearTimeout(timer);
     done(res);
   });

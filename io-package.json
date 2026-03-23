@@ -13,7 +13,7 @@
     "authors": ["ioBroker Community"],
     "keywords": ["stellantis", "peugeot", "opel", "citroen", "ds", "vauxhall", "ev"],
     "license": "MIT",
-    "version": "0.1.3",
+    "version": "0.1.4",
     "mode": "daemon",
     "type": "iot-systems",
     "icon": "admin/stellantis.png",
@@ -25,6 +25,10 @@
       "config": "materialize"
     },
     "news": {
+      "0.1.4": {
+        "de": "Admin-Kompatibilität verbessert: sendTo-Fallback auf socket.emit hinzugefügt, damit Auth-Buttons auch ohne globale sendTo-Funktion funktionieren.",
+        "en": "Improved admin compatibility: added sendTo fallback to socket.emit so auth buttons work even without global sendTo function."
+      },
       "0.1.3": {
         "de": "Admin-Messagehandling verbessert: sendTo-Fallback und Timeout-Fehlermeldung, damit Auth-URL-Erzeugung zuverlässig reagiert.",
         "en": "Improved admin message handling: sendTo fallback and timeout error feedback so auth URL generation responds reliably."
