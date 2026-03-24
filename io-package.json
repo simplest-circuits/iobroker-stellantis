@@ -13,7 +13,7 @@
     "authors": ["ioBroker Community"],
     "keywords": ["stellantis", "peugeot", "opel", "citroen", "ds", "vauxhall", "ev"],
     "license": "MIT",
-    "version": "0.1.11",
+    "version": "0.1.12",
     "mode": "daemon",
     "type": "iot-systems",
     "icon": "stellantis.png",
@@ -27,6 +27,10 @@
       "config": "materialize"
     },
     "news": {
+      "0.1.12": {
+        "de": "Zusätzliche Laufzeit-Logs ergänzt (Startup/Polling/API-Fehlerdetails), um Auth- und Fahrzeugabrufe in ioBroker einfacher zu diagnostizieren.",
+        "en": "Added extra runtime logs (startup/polling/API error details) to simplify diagnosing auth and vehicle fetch issues in ioBroker."
+      },
       "0.1.11": {
         "de": "OAuth2 aktualisiert: aktuelle Stellantis App-Credentials und markenspezifische Redirect-Schemes (Peugeot/Citroën/DS/Opel/Vauxhall) hinterlegt, inkl. Admin-Hinweis für den korrekten Redirect-Link.",
         "en": "Updated OAuth2: added current Stellantis app credentials and brand-specific redirect schemes (Peugeot/Citroën/DS/Opel/Vauxhall), including admin hint for the correct redirect link."

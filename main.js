@@ -58,6 +58,7 @@ class StellantisAdapter extends utils.Adapter {
 
         const brand = this.config.brand;
         const country = this.config.countryCode || "de";
+        this.log.info(`Configured brand/country: ${brand || "n/a"}/${country}`);
 
         if (!brand || !BRANDS[brand]) {
             this.log.warn("No brand configured. Open adapter settings to complete setup.");
@@ -67,6 +68,7 @@ class StellantisAdapter extends utils.Adapter {
 
         this.tokenManager = new TokenManager(this, brand, country);
         this.api = new StellantisApi(this.tokenManager, brand, country);
+        this.log.info("Token manager and API client initialized.");
 
         // Try connecting with stored tokens
         try {
@@ -92,25 +94,30 @@ class StellantisAdapter extends utils.Adapter {
 
     async pollAll() {
         if (this.pollTimer) clearTimeout(this.pollTimer);
+        this.log.info("Polling cycle started.");
 
         try {
             // Refresh vehicle list every poll cycle (cheap call)
             this.vehicles = await this.api.getVehicles();
-            this.log.debug(`Found ${this.vehicles.length} vehicle(s).`);
+            this.log.info(`Found ${this.vehicles.length} vehicle(s).`);
 
             for (const v of this.vehicles) {
                 const vin = v.vin || v.id;
-                if (!vin) continue;
+                if (!vin) {
+                    this.log.warn("Skipping vehicle entry without VIN/id.");
+                    continue;
+                }
                 try {
                     const status = await this.api.getVehicleStatus(vin);
                     await writeVehicleStatus(this, vin, status, v);
-                    this.log.debug(`Updated status for ${vin}`);
+                    this.log.info(`Updated status for ${vin}`);
                 } catch (err) {
                     this.log.warn(`Could not fetch status for ${vin}: ${err.message}`);
                 }
             }
 
             await this.setStateAsync("info.connection", { val: true, ack: true });
+            this.log.info("Polling cycle finished successfully.");
         } catch (err) {
             this.log.error(`Poll failed: ${err.message}`);
             await this.setStateAsync("info.connection", { val: false, ack: true });
@@ -118,6 +125,7 @@ class StellantisAdapter extends utils.Adapter {
 
         // Schedule next poll (default 10 min, configurable)
         const intervalMin = Math.max(2, parseInt(this.config.pollInterval) || 10);
+        this.log.info(`Next polling cycle in ${intervalMin} minute(s).`);
         this.pollTimer = setTimeout(() => this.pollAll(), intervalMin * 60 * 1000);
     }
 
