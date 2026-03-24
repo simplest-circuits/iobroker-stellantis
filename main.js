@@ -42,43 +42,52 @@ class StellantisAdapter extends utils.Adapter {
     // ──────────────────────────────────────────────────────────────────────────
 
     async onReady() {
-        this.log.info("Stellantis adapter starting...");
-
-        // Ensure auth state objects exist
-        await this.setObjectNotExistsAsync("auth.tokens", {
-            type: "state",
-            common: { name: "Stored OAuth tokens (JSON)", type: "string", role: "text", read: false, write: false, def: null },
-            native: {},
-        });
-        await this.setObjectNotExistsAsync("auth.pkce", {
-            type: "state",
-            common: { name: "PKCE session (JSON, temporary)", type: "string", role: "text", read: false, write: false, def: null },
-            native: {},
-        });
-
-        const brand = this.config.brand;
-        const country = this.config.countryCode || "de";
-        this.log.info(`Configured brand/country: ${brand || "n/a"}/${country}`);
-
-        if (!brand || !BRANDS[brand]) {
-            this.log.warn("No brand configured. Open adapter settings to complete setup.");
-            await this.setStateAsync("info.connection", { val: false, ack: true });
-            return;
-        }
-
-        this.tokenManager = new TokenManager(this, brand, country);
-        this.api = new StellantisApi(this.tokenManager, brand, country);
-        this.log.info("Token manager and API client initialized.");
-
-        // Try connecting with stored tokens
         try {
-            await this.tokenManager.getAccessToken();
-            await this.setStateAsync("info.connection", { val: true, ack: true });
-            this.log.info("Authenticated. Starting vehicle polling.");
-            await this.pollAll();
-            this.subscribeStates("*.commands.*");
+            this.log.info("Stellantis adapter starting...");
+            this.log.info("Ensuring auth state objects...");
+
+            // Ensure auth state objects exist
+            await this.setObjectNotExistsAsync("auth.tokens", {
+                type: "state",
+                common: { name: "Stored OAuth tokens (JSON)", type: "string", role: "text", read: false, write: false, def: null },
+                native: {},
+            });
+            this.log.info("Auth state object auth.tokens ready.");
+
+            await this.setObjectNotExistsAsync("auth.pkce", {
+                type: "state",
+                common: { name: "PKCE session (JSON, temporary)", type: "string", role: "text", read: false, write: false, def: null },
+                native: {},
+            });
+            this.log.info("Auth state object auth.pkce ready.");
+
+            const brand = this.config.brand;
+            const country = this.config.countryCode || "de";
+            this.log.info(`Configured brand/country: ${brand || "n/a"}/${country}`);
+
+            if (!brand || !BRANDS[brand]) {
+                this.log.warn("No brand configured. Open adapter settings to complete setup.");
+                await this.setStateAsync("info.connection", { val: false, ack: true });
+                return;
+            }
+
+            this.tokenManager = new TokenManager(this, brand, country);
+            this.api = new StellantisApi(this.tokenManager, brand, country);
+            this.log.info("Token manager and API client initialized.");
+
+            // Try connecting with stored tokens
+            try {
+                await this.tokenManager.getAccessToken();
+                await this.setStateAsync("info.connection", { val: true, ack: true });
+                this.log.info("Authenticated. Starting vehicle polling.");
+                await this.pollAll();
+                this.subscribeStates("*.commands.*");
+            } catch (err) {
+                this.log.warn(`Not authenticated yet: ${err.message}`);
+                await this.setStateAsync("info.connection", { val: false, ack: true });
+            }
         } catch (err) {
-            this.log.warn(`Not authenticated yet: ${err.message}`);
+            this.log.error(`onReady failed: ${err.message}`);
             await this.setStateAsync("info.connection", { val: false, ack: true });
         }
     }

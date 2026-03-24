@@ -13,7 +13,7 @@
     "authors": ["ioBroker Community"],
     "keywords": ["stellantis", "peugeot", "opel", "citroen", "ds", "vauxhall", "ev"],
     "license": "MIT",
-    "version": "0.1.12",
+    "version": "0.1.13",
     "mode": "daemon",
     "type": "iot-systems",
     "icon": "stellantis.png",
@@ -27,6 +27,10 @@
       "config": "materialize"
     },
     "news": {
+      "0.1.13": {
+        "de": "Startdiagnose verbessert: onReady mit zusätzlichem Schutz und Frühstart-Logs, um Abbrüche direkt im ioBroker-Log sichtbar zu machen.",
+        "en": "Improved startup diagnostics: added extra onReady protection and early startup logs to make abort points visible directly in ioBroker logs."
+      },
       "0.1.12": {
         "de": "Zusätzliche Laufzeit-Logs ergänzt (Startup/Polling/API-Fehlerdetails), um Auth- und Fahrzeugabrufe in ioBroker einfacher zu diagnostizieren.",
         "en": "Added extra runtime logs (startup/polling/API error details) to simplify diagnosing auth and vehicle fetch issues in ioBroker."
