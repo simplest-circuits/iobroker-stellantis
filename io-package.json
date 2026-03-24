@@ -13,19 +13,24 @@
     "authors": ["ioBroker Community"],
     "keywords": ["stellantis", "peugeot", "opel", "citroen", "ds", "vauxhall", "ev"],
     "license": "MIT",
-    "version": "0.1.8",
+    "version": "0.1.9",
     "mode": "daemon",
     "type": "iot-systems",
     "icon": "admin/stellantis.png",
     "extIcon": "https://raw.githubusercontent.com/simplest-circuits/iobroker-stellantis/main/admin/stellantis.png",
     "loglevel": "info",
     "main": "main.js",
+    "messagebox": true,
     "enabled": true,
     "restartSchedule": "0 4 * * *",
     "adminUI": {
       "config": "materialize"
     },
     "news": {
+      "0.1.9": {
+        "de": "OAuth2-Admin-Kommunikation repariert: messagebox aktiviert und Instanz-Erkennung im Admin verbessert.",
+        "en": "Fixed OAuth2 admin communication: enabled messagebox and improved instance detection in admin."
+      },
       "0.1.8": {
         "de": "PSA-Logo integriert: als Adapter-Icon unter admin/stellantis.png und im Admin-Header angezeigt.",
         "en": "Integrated PSA logo: used as adapter icon at admin/stellantis.png and displayed in admin header."

@@ -334,9 +334,11 @@
    ioBroker adapter settings boilerplate
    ────────────────────────────────────────────────────────────────────────── */
 function getTargetInstance() {
-  // "instance" is provided by ioBroker admin; fallback keeps first-instance behavior.
+  // "instance" can be numeric ("0") or full id ("stellantis.0"), depending on admin context.
   if (typeof instance !== "undefined" && instance !== null && instance !== "") {
-    return "stellantis." + instance;
+    const normalized = String(instance).trim();
+    if (normalized.startsWith("stellantis.")) return normalized;
+    return "stellantis." + normalized;
   }
   return "stellantis.0";
 }
@@ -398,7 +400,7 @@ function sendToAdapter(command, message, callback) {
       done({ error: "Keine Antwort vom Adapter. Bitte Instanz starten und erneut versuchen." });
       return;
     }
-    sock.emit("getState", "system.adapter.stellantis.0.alive", function (_err, state) {
+    sock.emit("getState", "system.adapter." + getTargetInstance() + ".alive", function (_err, state) {
       const alive = state && state.val === true;
       done({
         error: alive
