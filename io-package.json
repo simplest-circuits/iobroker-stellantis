@@ -13,7 +13,7 @@
     "authors": ["ioBroker Community"],
     "keywords": ["stellantis", "peugeot", "opel", "citroen", "ds", "vauxhall", "ev"],
     "license": "MIT",
-    "version": "0.1.7",
+    "version": "0.1.8",
     "mode": "daemon",
     "type": "iot-systems",
     "icon": "admin/stellantis.png",
@@ -26,6 +26,10 @@
       "config": "materialize"
     },
     "news": {
+      "0.1.8": {
+        "de": "PSA-Logo integriert: als Adapter-Icon unter admin/stellantis.png und im Admin-Header angezeigt.",
+        "en": "Integrated PSA logo: used as adapter icon at admin/stellantis.png and displayed in admin header."
+      },
       "0.1.7": {
         "de": "Admin-Kommunikation robuster gemacht: sendTo versucht mehrere Zielinstanzen und liefert bei Fehlern einen Alive-Status-Hinweis.",
         "en": "Made admin communication more robust: sendTo now tries multiple target instances and returns alive-status-aware errors."

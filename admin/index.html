@@ -33,6 +33,22 @@
       letter-spacing: 0.2px;
     }
 
+    .header-brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .header-logo {
+      width: 52px;
+      height: 52px;
+      object-fit: contain;
+      border-radius: 8px;
+      background: rgba(255, 255, 255, 0.03);
+      border: 1px solid #313a46;
+      padding: 4px;
+    }
+
     .subtitle {
       margin-top: 6px;
       color: var(--text-muted);
@@ -197,7 +213,10 @@
 
   <div class="row">
     <div class="col s12">
-      <h5 class="page-title">Stellantis Fahrzeuge - Adapter Einstellungen</h5>
+      <div class="header-brand">
+        <img src="stellantis.png" alt="Stellantis Logo" class="header-logo" />
+        <h5 class="page-title">Stellantis Fahrzeuge - Adapter Einstellungen</h5>
+      </div>
       <p class="subtitle">
         Unterstützt: MyPeugeot · MyCitroën · MyDS · MyOpel · MyVauxhall
       </p>
