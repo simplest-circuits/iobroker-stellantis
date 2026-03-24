@@ -214,7 +214,7 @@
   <div class="row">
     <div class="col s12">
       <div class="header-brand">
-        <img src="Groupe_PSA-Logo.wine.png" alt="PSA Group Logo" class="header-logo" />
+        <img src="stellantis.png" alt="PSA Group Logo" class="header-logo" />
         <h5 class="page-title">Stellantis Fahrzeuge - Adapter Einstellungen</h5>
       </div>
       <p class="subtitle">
@@ -518,6 +518,7 @@ document.getElementById("btn-get-url").addEventListener("click", function () {
     txt.textContent = res.url;
     openBtn.href = res.url;
     box.style.display = "block";
+    updateRedirectHint();
   });
 });
 
@@ -569,6 +570,35 @@ document.getElementById("btn-refresh-now").addEventListener("click", function ()
     alert(res.error ? "Fehler: " + res.error : "Fahrzeugdaten wurden aktualisiert.");
   });
 });
+
+function getRedirectSchemeForBrand(brand) {
+  switch (brand) {
+    case "MyCitroen":
+      return "mymacsdk";
+    case "MyDS":
+      return "mymdssdk";
+    case "MyOpel":
+      return "mymopsdk";
+    case "MyVauxhall":
+      return "mymvxsdk";
+    case "MyPeugeot":
+    default:
+      return "mymap";
+  }
+}
+
+function updateRedirectHint() {
+  const brand = document.getElementById("brand").value || "MyPeugeot";
+  const countryCode = (document.getElementById("countryCode").value || "de").toLowerCase();
+  const scheme = getRedirectSchemeForBrand(brand);
+  const hint = `${scheme}://oauth2redirect/${countryCode}?code=DEIN_CODE&state=...`;
+  const codeEl = document.querySelector("#auth-url-display code");
+  if (codeEl) codeEl.textContent = hint;
+}
+
+document.getElementById("brand").addEventListener("change", updateRedirectHint);
+document.getElementById("countryCode").addEventListener("input", updateRedirectHint);
+updateRedirectHint();
 </script>
 </body>
 </html>

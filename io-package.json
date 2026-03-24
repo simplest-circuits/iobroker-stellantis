@@ -13,11 +13,11 @@
     "authors": ["ioBroker Community"],
     "keywords": ["stellantis", "peugeot", "opel", "citroen", "ds", "vauxhall", "ev"],
     "license": "MIT",
-    "version": "0.1.10",
+    "version": "0.1.11",
     "mode": "daemon",
     "type": "iot-systems",
-    "icon": "Groupe_PSA-Logo.wine.png",
-    "extIcon": "https://raw.githubusercontent.com/simplest-circuits/iobroker-stellantis/main/admin/Groupe_PSA-Logo.wine.png",
+    "icon": "stellantis.png",
+    "extIcon": "https://raw.githubusercontent.com/simplest-circuits/iobroker-stellantis/main/admin/stellantis.png",
     "loglevel": "info",
     "main": "main.js",
     "messagebox": true,
@@ -27,9 +27,13 @@
       "config": "materialize"
     },
     "news": {
+      "0.1.11": {
+        "de": "OAuth2 aktualisiert: aktuelle Stellantis App-Credentials und markenspezifische Redirect-Schemes (Peugeot/Citroën/DS/Opel/Vauxhall) hinterlegt, inkl. Admin-Hinweis für den korrekten Redirect-Link.",
+        "en": "Updated OAuth2: added current Stellantis app credentials and brand-specific redirect schemes (Peugeot/Citroën/DS/Opel/Vauxhall), including admin hint for the correct redirect link."
+      },
       "0.1.10": {
-        "de": "Logoquelle vereinheitlicht: PSA-Logo wird jetzt direkt über admin/Groupe_PSA-Logo.wine.png für icon/extIcon und im Admin-Header genutzt.",
-        "en": "Unified logo source: PSA logo now uses admin/Groupe_PSA-Logo.wine.png for icon/extIcon and admin header."
+        "de": "Logoquelle vereinheitlicht: PSA-Logo wird jetzt direkt über admin/stellantis.png für icon/extIcon und im Admin-Header genutzt.",
+        "en": "Unified logo source: PSA logo now uses admin/stellantis.png for icon/extIcon and admin header."
       },
       "0.1.9": {
         "de": "OAuth2-Admin-Kommunikation repariert: messagebox aktiviert und Instanz-Erkennung im Admin verbessert.",

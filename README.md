@@ -1,6 +1,6 @@
 # ioBroker.stellantis
 
-[![Version](https://img.shields.io/badge/version-0.1.10-blue.svg)](https://github.com/iobroker-community-adapters/ioBroker.stellantis)
+[![Version](https://img.shields.io/badge/version-0.1.11-blue.svg)](https://github.com/iobroker-community-adapters/ioBroker.stellantis)
 [![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
 
 > **ioBroker Adapter für Stellantis-Fahrzeuge** (MyPeugeot · MyCitroën · MyDS · MyOpel · MyVauxhall)
@@ -50,11 +50,11 @@ So funktioniert es zuverlässig:
 ```bash
 npm pack
 ```
-2. Datei `iobroker.stellantis-0.1.10.tgz` auf den ioBroker-Host kopieren (z.B. nach `/opt/iobroker`).
+2. Datei `iobroker.stellantis-0.1.11.tgz` auf den ioBroker-Host kopieren (z.B. nach `/opt/iobroker`).
 3. Auf dem ioBroker-Host installieren:
 ```bash
 cd /opt/iobroker
-npm install ./iobroker.stellantis-0.1.10.tgz
+npm install ./iobroker.stellantis-0.1.11.tgz
 iobroker add stellantis
 ```
 
@@ -79,8 +79,9 @@ Der alte Username/Passwort-Login per API funktioniert nicht mehr.
 3. Auf **„Auth-URL erzeugen"** klicken
 4. Die angezeigte URL **im Browser öffnen** (PC empfohlen, kein Mobilgerät)
 5. Mit dem Stellantis-Account anmelden und Zugriff bestätigen
-6. Nach dem Login leitet der Browser auf eine nicht-ladbare URL um:  
-   `mymap://oauth2redirect/de?code=**DEIN_CODE**&state=...`
+6. Nach dem Login leitet der Browser auf eine nicht-ladbare URL um (Schema je Brand):  
+   `mym...://oauth2redirect/de?code=**DEIN_CODE**&state=...`  
+   Beispiele: `mymap://` (Peugeot), `mymopsdk://` (Opel), `mymacsdk://` (Citroën), `mymdssdk://` (DS), `mymvxsdk://` (Vauxhall)
 7. Den Wert des **`code=`-Parameters** kopieren  
    *(Im Browser: F12 → Netzwerk → letzter Request, oder direkt aus der Adressleiste)*
 8. Den Code in das Admin-Feld **„Authorization Code"** einfügen und **„Verbinden"** klicken
